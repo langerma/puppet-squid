@@ -1,0 +1,126 @@
+## THIS FILE IS MANAGED BY PUPPET.
+## Your changes won't last :-)
+
+# predefined ACLs
+<% scope.lookupvar('::squid::ssl_ports').each do |line| -%>
+acl SSL_ports port <%= line %>
+<% end -%>
+<% scope.lookupvar('::squid::safe_ports').each do |line| -%>
+acl Safe_ports port <%= line %>
+<% end -%>
+acl CONNECT method CONNECT
+
+# predefined http_accesses
+http_access allow manager localhost
+http_access deny manager
+http_access deny !Safe_ports
+http_access deny CONNECT !SSL_ports
+
+# user-defined ACLs
+<% scope.lookupvar('::squid::acl').each do |line| -%>
+acl <%= line %>
+<% end -%>
+
+# user-defined http_accesses
+<% scope.lookupvar('::squid::http_access').each do |line| -%>
+http_access <%= line %>
+<% end -%>
+http_access allow localhost
+http_access deny all
+
+# user-defined icp_access
+<% scope.lookupvar('::squid::icp_access').each do |line| -%>
+icp_access <%= line %>
+<% end -%>
+
+<% if scope.lookupvar('::squid::http_port') -%>
+# user-defined http_port
+<% scope.lookupvar('::squid::http_port').each do |line| -%>
+http_port <%= line %>
+<% end -%>
+<% end -%>
+
+<% if scope.lookupvar('::squid::https_port') -%>
+# user-defined https_port
+<% scope.lookupvar('::squid::https_port').each do |line| -%>
+https_port <%= line %>
+<% end -%>
+<% end -%>
+
+# user-defined tcp_outgoing_addresses
+<% scope.lookupvar('::squid::tcp_outgoing_address').each do |line| -%>
+tcp_outgoing_address <%= line %>
+<% end -%>
+
+# user-defined cache-dirs
+<% scope.lookupvar('::squid::cache_dir').each do |line| -%>
+cache_dir <%= line %>
+<% end -%>
+
+<% if !scope.lookupvar('::squid::cache_peer').empty? -%>
+# user-defined cache_peer
+<% scope.lookupvar('::squid::cache_peer').each do |line| -%>
+cache_peer <%= line %>
+<% end -%>
+
+<% end -%>
+<% if !scope.lookupvar('::squid::cache_peer_access').empty? -%>
+# user-defined cache_peer_access
+<% scope.lookupvar('::squid::cache_peer_access').each do |line| -%>
+cache_peer_access <%= line %>
+<% end -%>
+
+<% end -%>
+# general settings
+hierarchy_stoplist             <%= scope.lookupvar('::squid::hierarchy_stoplist') %>
+coredump_dir                   <%= scope.lookupvar('::squid::coredump_dir') %>
+maximum_object_size_in_memory  <%= scope.lookupvar('::squid::maximum_object_size_in_memory') %>
+maximum_object_size            <%= scope.lookupvar('::squid::maximum_object_size') %>
+cache_mgr                      <%= scope.lookupvar('::squid::cache_mgr') %>
+client_persistent_connections  <%= scope.lookupvar('::squid::client_persistent_connections') %>
+server_persistent_connections  <%= scope.lookupvar('::squid::server_persistent_connections') %>
+visible_hostname               <%= scope.lookupvar('::squid::visible_hostname') %>
+unique_hostname                <%= scope.lookupvar('::squid::unique_hostname') %>
+forwarded_for                  <%= scope.lookupvar('::squid::forwarded_for') %>
+via                            <%= scope.lookupvar('::squid::via') %>
+ftp_user                       <%= scope.lookupvar('::squid::ftp_user') %>
+<% if scope.lookupvar('::squid::dns_nameservers') != nil -%>
+dns_nameservers                <%= scope.lookupvar('::squid::dns_nameservers') %>
+<% end -%>
+<% scope.lookupvar('::squid::access_log').each do |line| -%>
+access_log                     <%= line %>
+<% end -%>
+
+cache_mem                      <%= scope.lookupvar('::squid::cache_mem') %>
+cache_store_log                <%= scope.lookupvar('::squid::cache_store_log') %>
+cache_log                      <%= scope.lookupvar('::squid::cache_log') %>
+<% scope.lookupvar('::squid::cache').each do |line| -%>
+cache                          <%= line %>
+<% end -%>
+
+<% scope.lookupvar('::squid::refresh_patterns').each do |line| -%>
+refresh_pattern                <%= line %>
+<% end -%>
+refresh_pattern                ^ftp:              1440    20%    10080
+refresh_pattern                ^gopher:           1440     0%     1440
+refresh_pattern                -i (/cgi-bin/|\?)     0     0%        0
+refresh_pattern                .                     0    20%     4320
+
+<% if !scope.lookupvar('::squid::always_direct').empty? -%>
+# user-defined always_direct
+<% scope.lookupvar('::squid::always_direct').each do |line| -%>
+always_direct <%= line %>
+<% end -%>
+
+<% end -%>
+<% if !scope.lookupvar('::squid::never_direct').empty? -%>
+# user-defined never_direct
+<% scope.lookupvar('::squid::never_direct').each do |line| -%>
+never_direct <%= line %>
+<% end -%>
+
+<% end -%>
+# user-defined configuration settings from addon_config
+<% scope.lookupvar('::squid::addon_config').each do |line| -%>
+<%= line %>
+<% end -%>
