@@ -15,7 +15,7 @@ class squid (
   $config_validate_cmd           = $::squid::params::config_validate_cmd,
   $log_dir                       = $::squid::params::log_dir,
   $logrotate_file                = $::squid::params::logrotate_file,
-  $rotateint                     = undef,
+  $rotateint                     = '',
   $rotatecnt                     = 3,
   $ssl_ports                     = [443],
   $safe_ports                    = ['80','21','443','70','210','1025-65535','280','488','591','777'],

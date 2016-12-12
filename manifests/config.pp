@@ -9,7 +9,7 @@ class squid::config {
     validate_cmd => $::squid::config_validate_cmd,
     notify       => Service[$::squid::service_name],
   }
-  if $::squid::rotateint != undef and $::squid::rotateint =~ /(hourly|daily)|(weekly|monthly)/ {
+  if $::squid::rotateint =~ /(hourly|daily)|(weekly|monthly)/ {
     file {$::squid::logrotate_file:
       ensure  => 'present',
       content => template('squid/logrotate.squid.erb'),
