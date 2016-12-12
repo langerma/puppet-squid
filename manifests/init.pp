@@ -17,8 +17,6 @@ class squid (
   $logrotate_file                = $::squid::params::logrotate_file,
   $rotateint                     = '',
   $rotatecnt                     = 3,
-  $ssl_ports                     = [443],
-  $safe_ports                    = ['80','21','443','70','210','1025-65535','280','488','591','777'],
   $acl                           = [],
   $http_access                   = [],
   $icp_access                    = [],
