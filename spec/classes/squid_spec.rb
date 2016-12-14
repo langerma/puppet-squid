@@ -14,8 +14,8 @@ describe 'squid' do
     
           it {is_expected.to contain_class('squid')}
           it {is_expected.to contain_class('squid::params')}
-          it {is_expected.to contain_class('squid::install').that_comes_before('squid::config')}
-          it {is_expected.to contain_class('squid::config').that_comes_before('squid::service')}
+          it {is_expected.to contain_class('squid::install').that_comes_before('Class[squid::config]')}
+          it {is_expected.to contain_class('squid::config').that_comes_before('Class[squid::service]')}
           it {is_expected.to contain_class('squid::service')}
     
           it {is_expected.to contain_service('squid').that_subscribes_to('File[/etc/squid/squid.conf]')}
