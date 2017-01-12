@@ -19,6 +19,15 @@ class squid::params {
         fail("${::operatingsystem} ${::operatingsystemmajrelease} not supported")
       }
     }
+    'FreeBSD': {
+      $package_name        = 'squid'
+      $service_name        = 'squid'
+      $reload_cmd          = 'service squid reload'
+      $config_file         = '/usr/local/etc/squid/squid.conf'
+      $config_validate_cmd = '/usr/local/sbin/squid -k parse -f %'
+      $coredump_dir        = '/var/squid'
+      $log_dir             = '/var/log/squid'
+    }
     default: {
       fail("${::operatingsystem} not supported")
     }
